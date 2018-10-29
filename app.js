@@ -2,27 +2,47 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
 
-const animals = [
-    {
-        name: "Tim",
-        species: "Whale",
-        gender: 'male',
-        age: 18,
-        animalId: 1
-    },
-    {
-        name: "Vincenzo",
-        species: "Snake",
-        gender: 'male',
-        age: 18,
-        animalId: 2
-    },
-    
-]
+const zoos = {
+    "vimcenzoo": [{
+            name: "Tim",
+            species: "Whale",
+            gender: 'male',
+            age: 18,
+            animalId: 1
+        },
+        {
+            name: "Vincenzo",
+            species: "Snake",
+            gender: 'male',
+            age: 18,
+            animalId: 2
+        },
+
+    ],
+    "zootoo": [{
+            name: "Ikey",
+            species: "Gopher",
+            gender: 'male',
+            age: 3,
+            animalId: 1
+        },
+        {
+            name: "Daddy",
+            species: "HUman",
+            gender: 'male',
+            age: 58,
+            animalId: 2
+        }
+    ]
+}
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(express.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
+app.use(express.urlencoded({
+    extended: true
+}));
 
 
 app.get('/zoo/animals', function(req, res) {
@@ -31,13 +51,15 @@ app.get('/zoo/animals', function(req, res) {
 
 app.get('/zoo/animals/:animalId', function(req, res) {
 
-    for(animal in animals){
-        if (animals[animal].animalId == req.params.animalId){
-           return res.status(200).json(animals[animal]); 
+    for (animal in animals) {
+        if (animals[animal].animalId == req.params.animalId) {
+            return res.status(200).json(animals[animal]);
         }
     }
 
-    return res.status(404).json({err: "Animal could not be found"});
+    return res.status(404).json({
+        err: "Animal could not be found"
+    });
 });
 
 app.post('/zoo/animals', function(req, res) {
@@ -53,27 +75,31 @@ app.post('/zoo/animals', function(req, res) {
 app.put('/zoo/animals/:animalId', function(req, res) {
     const updatedAnimal = req.body;
 
-    for(animal in animals) {
+    for (animal in animals) {
         let currentAnimal = animals[animal];
         if (currentAnimal.animalId == updatedAnimal.animalId) {
             animals[animal] = updatedAnimal;
             return res.status(200).json(updatedAnimal)
         }
     }
-    
-    return res.status(404).json({err: "Animal could not be found"})
+
+    return res.status(404).json({
+        err: "Animal could not be found"
+    })
 });
 
 app.delete('/zoo/animals/:animalId', function(req, res) {
-    for(animal in animals) {
+    for (animal in animals) {
         let currentAnimal = animals[animal];
-        if(currentAnimal.animalId == req.params.animalId) {
+        if (currentAnimal.animalId == req.params.animalId) {
             delete animals[animal];
             return res.status(200).json(currentAnimal)
         }
     }
 
-    return res.status(404).json({err: "Animal could not be found"})
+    return res.status(404).json({
+        err: "Animal could not be found"
+    })
 })
 
 
